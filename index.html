@@ -1,0 +1,3627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Birthday Mission 🎂</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color: white;
+
+    background:
+        radial-gradient(circle at 20% 20%, rgba(124,58,237,.22), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(236,72,153,.18), transparent 30%),
+        linear-gradient(135deg, #050509, #0b0714 50%, #050509);
+
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   BACKGROUND STARS
+========================= */
+
+.stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+
+    width: 2px;
+    height: 2px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    opacity: .5;
+
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+
+    0%, 100% {
+        opacity: .15;
+        transform: scale(.7);
+    }
+
+    50% {
+        opacity: .8;
+        transform: scale(1.3);
+    }
+}
+
+
+/* =========================
+   MUSIC CONTROLS
+========================= */
+
+.music-controls {
+    position: fixed;
+
+    top: 15px;
+    right: 15px;
+
+    display: flex;
+    gap: 8px;
+
+    z-index: 1000;
+}
+
+.music-controls button {
+    border: 1px solid rgba(255,255,255,.15);
+
+    background: rgba(20,20,30,.75);
+
+    color: white;
+
+    padding: 9px 12px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    backdrop-filter: blur(10px);
+
+    transition: .25s ease;
+}
+
+.music-controls button:hover {
+    background: rgba(255,255,255,.12);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.container {
+    position: relative;
+
+    z-index: 1;
+
+    width: 100%;
+    min-height: 100vh;
+}
+
+.screen {
+    display: none;
+
+    min-height: 100vh;
+
+    width: 100%;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 80px 20px 40px;
+}
+
+.screen.active {
+    display: flex;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    width: min(700px, 95vw);
+
+    padding: 40px;
+
+    text-align: center;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.025)
+        );
+
+    border: 1px solid rgba(255,255,255,.14);
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.55),
+        inset 0 1px rgba(255,255,255,.08);
+
+    backdrop-filter: blur(20px);
+}
+
+.emoji {
+    font-size: 60px;
+
+    margin-bottom: 15px;
+
+    animation: floatEmoji 3s ease-in-out infinite;
+}
+
+@keyframes floatEmoji {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+h1,
+h2 {
+    margin-top: 0;
+}
+
+h1 {
+    font-size: clamp(38px, 8vw, 70px);
+
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: clamp(28px, 5vw, 45px);
+}
+
+p {
+    line-height: 1.7;
+    opacity: .85;
+}
+
+.typing {
+    font-family: monospace;
+
+    font-size: 14px;
+
+    opacity: .75;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    font-family: inherit;
+}
+
+.card > button,
+.final-memory-unlock button {
+
+    border: none;
+
+    padding: 14px 24px;
+
+    border-radius: 12px;
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #ec4899
+        );
+
+    box-shadow:
+        0 10px 30px rgba(124,58,237,.25);
+
+    transition: .25s ease;
+}
+
+.card > button:hover,
+.final-memory-unlock button:hover {
+
+    transform: translateY(-3px) scale(1.02);
+
+    box-shadow:
+        0 15px 40px rgba(236,72,153,.3);
+}
+
+.card > button:active,
+.final-memory-unlock button:active {
+    transform: scale(.97);
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-box {
+
+    width: 100%;
+
+    height: 12px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background: rgba(255,255,255,.08);
+
+    margin: 20px 0 25px;
+}
+
+.progress {
+
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7c3aed,
+            #ec4899,
+            #f59e0b
+        );
+
+    transition: width .8s ease;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+.input-group {
+    margin: 25px 0;
+}
+
+input {
+
+    width: 100%;
+
+    padding: 15px 18px;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,.15);
+
+    outline: none;
+
+    background: rgba(0,0,0,.3);
+
+    color: white;
+
+    font-size: 16px;
+
+    text-align: center;
+
+    transition: .25s ease;
+}
+
+input:focus {
+
+    border-color: #ec4899;
+
+    box-shadow:
+        0 0 20px rgba(236,72,153,.15);
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin: 25px 0;
+}
+
+.stat {
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+}
+
+.stat strong {
+    display: block;
+
+    font-size: 28px;
+
+    margin-top: 5px;
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz-options {
+
+    display: grid;
+
+    gap: 12px;
+
+    margin: 25px 0;
+}
+
+.quiz-options button {
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    background:
+        rgba(255,255,255,.06);
+
+    color: white;
+
+    cursor: pointer;
+
+    transition: .25s ease;
+}
+
+.quiz-options button:hover {
+
+    background:
+        rgba(255,255,255,.12);
+
+    transform: translateX(5px);
+}
+
+#quizResult {
+
+    min-height: 30px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   OLD MEMORY DATABASE
+========================= */
+
+.memories {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin: 25px 0;
+}
+
+.memory {
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    transition: .25s ease;
+}
+
+.memory:hover {
+
+    transform: translateY(-5px);
+
+    background:
+        rgba(255,255,255,.09);
+}
+
+.memory h3 {
+    margin-top: 0;
+}
+
+
+/* =========================
+   SCRATCH CARD
+========================= */
+
+.scratch-wrapper {
+
+    position: relative;
+
+    width: min(500px, 100%);
+
+    height: 280px;
+
+    margin: 25px auto;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    touch-action: none;
+
+    background: #111;
+}
+
+.scratch-message {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 25px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #32115e,
+            #6b174f
+        );
+}
+
+.scratch-message h2 {
+
+    font-size: 24px;
+
+    margin: 5px 0;
+}
+
+.surprise-icon {
+    font-size: 55px;
+}
+
+#scratchCanvas {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    cursor: crosshair;
+
+    touch-action: none;
+
+    transition: opacity .7s ease;
+}
+
+.scratch-hint {
+    opacity: .6;
+}
+
+.scratch-progress {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    height: 8px;
+
+    margin: auto;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background: rgba(255,255,255,.08);
+}
+
+#scratchProgress {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7c3aed,
+            #ec4899
+        );
+
+    transition: width .25s ease;
+}
+
+
+/* =========================
+   MEMORY VAULT
+========================= */
+
+.memory-vault {
+
+    width: min(950px, 95vw);
+
+    margin: auto;
+
+    padding: 30px;
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.025)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.55),
+        inset 0 1px rgba(255,255,255,.08);
+
+    backdrop-filter: blur(20px);
+}
+
+.vault-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    text-align: left;
+
+    margin-bottom: 10px;
+}
+
+.vault-lock {
+
+    width: 58px;
+    height: 58px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    font-size: 28px;
+
+    box-shadow:
+        0 0 25px rgba(255,255,255,.08);
+}
+
+.vault-system {
+
+    font-family: monospace;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    opacity: .55;
+}
+
+.vault-header h2 {
+
+    margin: 3px 0 0;
+}
+
+.vault-intro {
+
+    opacity: .75;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   MEMORY PROGRESS
+========================= */
+
+.memory-progress-area {
+
+    margin: 20px auto 28px;
+
+    max-width: 700px;
+}
+
+.progress-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    margin-bottom: 8px;
+
+    opacity: .8;
+}
+
+.memory-progress-track {
+
+    height: 9px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background:
+        rgba(255,255,255,.08);
+}
+
+.memory-progress-fill {
+
+    width: 16.66%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7c3aed,
+            #ec4899,
+            #f59e0b
+        );
+
+    box-shadow:
+        0 0 20px rgba(236,72,153,.45);
+
+    transition:
+        width .7s cubic-bezier(.2,.8,.2,1);
+}
+
+.unlock-status {
+
+    margin-top: 10px;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    color: #fbbf24;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   CAROUSEL
+========================= */
+
+.carousel {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 18px;
+}
+
+.photo-frame {
+
+    position: relative;
+
+    width: min(720px, 75vw);
+
+    height: min(520px, 58vh);
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    background: #080808;
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.65);
+}
+
+.photo-frame img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        opacity .35s ease,
+        transform .5s ease;
+}
+
+.photo-frame.changing img {
+
+    opacity: 0;
+
+    transform: scale(1.06);
+}
+
+.photo-glow {
+
+    position: absolute;
+
+    inset: -20px;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(168,85,247,.18),
+            transparent 65%
+        );
+
+    z-index: 0;
+}
+
+.photo-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.05) 30%,
+            rgba(0,0,0,.85) 100%
+        );
+
+    pointer-events: none;
+}
+
+.photo-number {
+
+    position: absolute;
+
+    top: 18px;
+
+    left: 18px;
+
+    padding: 7px 12px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(0,0,0,.55);
+
+    backdrop-filter: blur(8px);
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    z-index: 2;
+}
+
+.photo-caption {
+
+    position: absolute;
+
+    left: 25px;
+
+    right: 25px;
+
+    bottom: 24px;
+
+    z-index: 3;
+
+    text-align: left;
+}
+
+.caption-tag {
+
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    margin-bottom: 8px;
+
+    border-radius: 6px;
+
+    background:
+        rgba(236,72,153,.2);
+
+    border:
+        1px solid rgba(236,72,153,.35);
+
+    font-family: monospace;
+
+    font-size: 10px;
+
+    letter-spacing: 1.5px;
+}
+
+.photo-caption h3 {
+
+    margin: 0 0 5px;
+
+    font-size:
+        clamp(20px, 3vw, 30px);
+}
+
+.photo-caption p {
+
+    margin: 0;
+
+    opacity: .85;
+
+    max-width: 600px;
+}
+
+
+/* =========================
+   CAROUSEL BUTTONS
+========================= */
+
+.carousel-btn {
+
+    width: 50px;
+
+    height: 50px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(255,255,255,.2);
+
+    background:
+        rgba(255,255,255,.08);
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: .25s ease;
+}
+
+.carousel-btn:hover {
+
+    transform: scale(1.12);
+
+    background:
+        rgba(255,255,255,.16);
+
+    box-shadow:
+        0 0 25px rgba(255,255,255,.15);
+}
+
+.carousel-btn:active {
+    transform: scale(.95);
+}
+
+
+/* =========================
+   MEMORY DOTS
+========================= */
+
+.memory-dots {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 20px;
+}
+
+.memory-dot {
+
+    width: 10px;
+
+    height: 10px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.2);
+
+    cursor: pointer;
+
+    transition: .3s ease;
+}
+
+.memory-dot.active {
+
+    width: 28px;
+
+    border-radius: 10px;
+
+    background: #ec4899;
+
+    box-shadow:
+        0 0 12px rgba(236,72,153,.7);
+}
+
+.swipe-hint {
+
+    margin-top: 14px;
+
+    font-family: monospace;
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    opacity: .35;
+}
+
+
+/* =========================
+   FINAL MEMORY UNLOCK
+========================= */
+
+.final-memory-unlock {
+
+    max-height: 0;
+
+    opacity: 0;
+
+    overflow: hidden;
+
+    transition:
+        max-height .8s ease,
+        opacity .6s ease,
+        margin .6s ease;
+
+    margin-top: 0;
+}
+
+.final-memory-unlock.show {
+
+    max-height: 250px;
+
+    opacity: 1;
+
+    margin-top: 28px;
+}
+
+.all-unlocked {
+
+    display: inline-block;
+
+    padding: 10px 18px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(34,197,94,.12);
+
+    border:
+        1px solid rgba(34,197,94,.35);
+
+    color: #86efac;
+
+    font-family: monospace;
+
+    font-size: 13px;
+
+    box-shadow:
+        0 0 25px rgba(34,197,94,.12);
+}
+
+.final-memory-unlock p {
+    opacity: .75;
+}
+
+
+/* =========================
+   FINAL MESSAGE
+========================= */
+
+.final-message {
+
+    max-width: 750px;
+
+    padding: 45px 30px;
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.1),
+            rgba(255,255,255,.03)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.5);
+}
+
+.final-message h2 {
+
+    font-size:
+        clamp(30px, 6vw, 55px);
+}
+
+.signature {
+
+    margin-top: 30px;
+
+    opacity: .6;
+
+    font-family: monospace;
+}
+
+
+/* =========================
+   CONFETTI
+========================= */
+
+.confetti {
+
+    position: fixed;
+
+    top: -30px;
+
+    z-index: 9999;
+
+    pointer-events: none;
+
+    animation:
+        confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+
+    to {
+
+        transform:
+            translateY(110vh)
+            rotate(720deg);
+
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .card {
+        padding: 28px 18px;
+    }
+
+    .memories {
+        grid-template-columns: 1fr;
+    }
+
+    .memory-vault {
+        padding: 20px 12px;
+    }
+
+    .carousel {
+        gap: 7px;
+    }
+
+    .photo-frame {
+
+        width:
+            calc(100vw - 95px);
+
+        height: 55vh;
+
+        min-height: 380px;
+    }
+
+    .carousel-btn {
+
+        width: 38px;
+
+        height: 38px;
+
+        font-size: 17px;
+    }
+
+    .photo-caption {
+
+        left: 16px;
+
+        right: 16px;
+
+        bottom: 17px;
+    }
+
+    .vault-system {
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .profile {
+        grid-template-columns: 1fr;
+    }
+
+    .music-controls {
+
+        flex-direction: column;
+
+        top: 10px;
+
+        right: 10px;
+    }
+
+    .vault-header {
+        gap: 10px;
+    }
+
+    .vault-lock {
+
+        width: 45px;
+
+        height: 45px;
+
+        font-size: 21px;
+    }
+
+    .photo-frame {
+
+        height: 52vh;
+
+        min-height: 330px;
+    }
+
+    .photo-caption h3 {
+        font-size: 20px;
+    }
+
+    .photo-caption p {
+        font-size: 13px;
+    }
+}
+
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: .01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        scroll-behavior: auto !important;
+
+        transition-duration: .01ms !important;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     MUSIC CONTROLS
+========================= -->
+
+<div class="music-controls">
+
+    <button id="musicToggle" type="button">
+        🔇 Music Off
+    </button>
+
+    <button id="musicPlayPause" type="button">
+        ▶️ Play
+    </button>
+
+</div>
+
+
+<!-- =========================
+     STARS
+========================= -->
+
+<div class="stars" id="stars"></div>
+
+
+<div class="container">
+
+
+<!-- =========================
+     SCREEN 1
+========================= -->
+
+<section class="screen active" id="screen1">
+
+    <div class="card">
+
+        <div class="emoji">💻</div>
+
+        <h1>Birthday.exe</h1>
+
+        <div
+            class="typing"
+            id="loadingText">
+            Initializing Birthday System...
+        </div>
+
+        <div class="progress-box">
+
+            <div
+                class="progress"
+                id="progress">
+            </div>
+
+        </div>
+
+        <p>
+            A very important system has detected a birthday...
+        </p>
+
+        <button onclick="startMission()">
+            🚀 START MISSION
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 2
+========================= -->
+
+<section class="screen" id="screen2">
+
+    <div class="card">
+
+        <div class="emoji">🔓</div>
+
+        <h2>ACCESS GRANTED</h2>
+
+        <p>
+            Birthday protocol successfully activated.
+        </p>
+
+        <p>
+            Preparing brother identification system...
+        </p>
+
+        <button onclick="nextScreen(3)">
+            CONTINUE →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 3
+========================= -->
+
+<section class="screen" id="screen3">
+
+    <div class="card">
+
+        <div class="emoji">👤</div>
+
+        <h2>IDENTIFY BROTHER</h2>
+
+        <p>
+            Enter the name of the legendary birthday subject.
+        </p>
+
+        <div class="input-group">
+
+            <input
+                id="nameInput"
+                type="text"
+                placeholder=" Your name Brother..."
+                autocomplete="off">
+
+        </div>
+
+        <button onclick="saveName()">
+            CONFIRM IDENTITY →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 4
+========================= -->
+
+<section class="screen" id="screen4">
+
+    <div class="card">
+
+        <div class="emoji">🔬</div>
+
+        <h2>AGE SCANNER</h2>
+
+        <p>
+            System requires the birthday subject's current age.
+        </p>
+
+        <div class="input-group">
+
+            <input
+                id="ageInput"
+                type="number"
+                min="1"
+                max="120"
+                placeholder="Enter age...">
+
+        </div>
+
+        <button onclick="scanAge()">
+            SCAN AGE →
+        </button>
+
+        <div id="ageResult"></div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 5
+========================= -->
+
+<section class="screen" id="screen5">
+
+    <div class="card">
+
+        <div class="emoji">🧬</div>
+
+        <h2>BROTHER PROFILE</h2>
+
+        <p>
+            Subject successfully analyzed.
+        </p>
+
+        <div class="profile">
+
+            <div class="stat">
+                Age
+                <strong id="profileAge">--</strong>
+            </div>
+
+            <div class="stat">
+                Level
+                <strong id="profileLevel">--</strong>
+            </div>
+
+        </div>
+
+        <p id="ageMessage"></p>
+
+        <button onclick="nextScreen(6)">
+            CONTINUE →
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 6
+========================= -->
+
+<section class="screen" id="screen6">
+
+    <div class="card">
+
+        <div class="emoji">🧠</div>
+
+        <h2>BROTHER QUIZ</h2>
+
+        <p>
+            How your brother think about you?
+        </p>
+
+        <p>
+            <strong>
+                What is your most dangerous superpower?<br>( Aapki sabse khatarnaak jaadui shakti kya hai...)
+            </strong>
+        </p>
+
+        <div class="quiz-options">
+
+            <button onclick="quizAnswer('correct')">
+                🍕 Stealing food 😆
+            </button>
+
+            <button onclick="quizAnswer('wrong')">
+                🦸 Flying
+            </button>
+
+            <button onclick="quizAnswer('wrong')">
+                🧙 Reading minds
+            </button>
+
+            <button onclick="quizAnswer('wrong')">
+                ⚡ Controlling electricity
+            </button>
+
+        </div>
+
+        <p id="quizResult"></p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 7
+========================= -->
+
+<section class="screen" id="screen7">
+
+    <div class="card">
+
+        <div class="emoji">💭</div>
+
+        <h2>MEMORY DATABASE</h2>
+
+        <p>
+            Loading classified brother memories...
+        </p>
+
+        <div class="memories">
+
+            <div class="memory">
+
+                <h3>😂 Giving great solution to everyone</h3>
+
+                <p>
+                    Best Solution giver as a my mother (My Priyesh Brother.)
+                </p>
+
+            </div>
+
+            <div class="memory">
+
+                <h3>🍕 Food Stealing</h3>
+
+                <p>
+                    Jab bhi aap aas pass hote ho, mera khana rahasyamayi tareeke se gayab ho jata hai.
+                </p>
+
+            </div>
+
+            <div class="memory">
+
+                <h3>🎮 Gaming Battles</h3>
+
+                <p>
+                    Har game me Headshot marne wala Dhurandhar->(Priyesh bhai ) 
+                </p>
+
+            </div>
+
+        </div>
+
+        <button onclick="nextScreen(8)">
+            OPEN SECRET GIFT 🔐
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 8
+========================= -->
+
+<section class="screen" id="screen8">
+
+    <div class="card">
+
+        <div class="emoji">🔐</div>
+
+        <h2>SECRET GIFT</h2>
+
+        <p>
+            Scratch the card below to reveal your birthday surprise! 🎁<br>(scratch karo...)
+        </p>
+
+
+        <div class="scratch-wrapper">
+
+            <div class="scratch-message">
+
+                <div class="surprise-icon">
+                    🎁
+                </div>
+
+                <h2>
+                    🎉 SURPRISE UNLOCKED!
+                </h2>
+
+                <p>
+
+                    Happy Birthday, Bro! ❤️
+
+                    <br><br>
+
+                    Your real gift is waiting for you!
+
+                    <br>
+
+                    You deserve something awesome. 😎
+
+                </p>
+
+                <button onclick="nextScreen(9)">
+                    📸 SEE OUR MEMORIES
+                </button>
+
+            </div>
+
+
+            <canvas id="scratchCanvas"></canvas>
+
+        </div>
+
+
+        <p class="scratch-hint">
+            👆 Scratch with your mouse or finger
+        </p>
+
+
+        <div class="scratch-progress">
+
+            <div id="scratchProgress"></div>
+
+        </div>
+
+        <p id="scratchPercent">
+            0% scratched
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 9
+     MEMORY VAULT
+========================= -->
+
+<section class="screen" id="screen9">
+
+    <div class="memory-vault">
+
+
+        <div class="vault-header">
+
+            <div class="vault-lock">
+                🔐
+            </div>
+
+            <div>
+
+                <div class="vault-system">
+                    MEMORY DATABASE // ACCESSING...
+                </div>
+
+                <h2>
+                    📸 MEMORY VAULT
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <p class="vault-intro">
+
+            Before the final surprise...
+
+            <br>
+
+            let's unlock some legendary memories. ❤️
+
+        </p>
+
+
+        <!-- Progress -->
+
+        <div class="memory-progress-area">
+
+            <div class="progress-top">
+
+                <span id="memoryCounter">
+                    MEMORY 1 / 6
+                </span>
+
+                <span id="memoryPercent">
+                    17%
+                </span>
+
+            </div>
+
+
+            <div class="memory-progress-track">
+
+                <div
+                    class="memory-progress-fill"
+                    id="memoryProgressFill">
+                </div>
+
+            </div>
+
+
+            <div
+                class="unlock-status"
+                id="unlockStatus">
+
+                🔓 1 MEMORY UNLOCKED
+
+            </div>
+
+        </div>
+
+
+        <!-- Carousel -->
+
+        <div class="carousel">
+
+
+            <button
+                class="carousel-btn prev"
+                onclick="previousMemory()"
+                aria-label="Previous memory">
+
+                ❮
+
+            </button>
+
+
+            <div class="photo-frame">
+
+                <div class="photo-glow"></div>
+
+
+                <img
+                    id="memoryImage"
+                    src="brother1.jpg"
+                    alt="Brother memory">
+
+
+                <div class="photo-overlay"></div>
+
+
+                <div
+                    class="photo-number"
+                    id="photoNumber">
+
+                    #01
+
+                </div>
+
+
+                <div class="photo-caption">
+
+                    <div class="caption-tag">
+                        MEMORY.EXE
+                    </div>
+
+                    <h3 id="memoryTitle">
+                        😂 The Legend
+                    </h3>
+
+                    <p id="memoryCaption">
+                        The moment that officially entered the archives.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="carousel-btn next"
+                onclick="nextMemory()"
+                aria-label="Next memory">
+
+                ❯
+
+            </button>
+
+        </div>
+
+
+        <!-- Dots -->
+
+        <div
+            class="memory-dots"
+            id="memoryDots">
+
+            <button
+                class="memory-dot active"
+                onclick="goToMemory(0)">
+            </button>
+
+            <button
+                class="memory-dot"
+                onclick="goToMemory(1)">
+            </button>
+
+            <button
+                class="memory-dot"
+                onclick="goToMemory(2)">
+            </button>
+
+            <button
+                class="memory-dot"
+                onclick="goToMemory(3)">
+            </button>
+
+            <button
+                class="memory-dot"
+                onclick="goToMemory(4)">
+            </button>
+
+            <button
+                class="memory-dot"
+                onclick="goToMemory(5)">
+            </button>
+
+        </div>
+
+
+        <div class="swipe-hint">
+            ← SWIPE / CLICK TO EXPLORE →
+        </div>
+
+
+        <!-- Final unlock -->
+
+        <div
+            class="final-memory-unlock"
+            id="finalMemoryUnlock">
+
+            <div class="all-unlocked">
+
+                🎉 ALL 6 MEMORIES UNLOCKED
+
+            </div>
+
+
+            <p>
+
+                Memory database complete.
+
+                <br>
+
+                Final birthday surprise is ready...
+
+            </p>
+
+
+            <button onclick="nextScreen(10)">
+
+                🎁 UNLOCK FINAL SURPRISE
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     SCREEN 10
+========================= -->
+
+<section class="screen" id="screen10">
+
+    <div class="final-message">
+
+        <div class="emoji">
+            🎂
+        </div>
+
+
+        <h2>
+
+            🎉 HAPPY BIRTHDAY,
+            <span id="finalName">
+                BROTHER
+            </span>!
+            🎂
+
+        </h2>
+
+
+        <p>
+
+            Happy Birthday to the most annoying,
+            funniest and coolest brother ever! 😂❤️
+
+            <br><br>
+
+            Life would definitely be quieter without you...
+
+            <br>
+
+            but honestly,
+            it would also be much more boring.
+
+            <br><br>
+
+            Keep smiling,
+            keep growing,
+            and keep being the legend you are. 👑
+
+        </p>
+
+
+        <div class="signature">
+
+            Made with ❤️ + JavaScript
+
+        </div>
+
+
+        <br>
+
+
+        <button onclick="celebrate()">
+
+            🎉 CELEBRATE AGAIN
+
+        </button>
+
+    </div>
+
+</section>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   GLOBAL VARIABLES
+========================= */
+
+let brotherName = "BROTHER";
+let brotherAge = 0;
+
+
+/* =========================
+   STARS
+========================= */
+
+const starsContainer =
+    document.getElementById("stars");
+
+for (let i = 0; i < 100; i++) {
+
+    const star =
+        document.createElement("div");
+
+    star.className = "star";
+
+    star.style.left =
+        Math.random() * 100 + "%";
+
+    star.style.top =
+        Math.random() * 100 + "%";
+
+    star.style.animationDelay =
+        Math.random() * 3 + "s";
+
+    star.style.opacity =
+        Math.random() * .6 + .1;
+
+    starsContainer.appendChild(star);
+}
+
+
+/* =========================
+   SCREEN NAVIGATION
+========================= */
+
+function nextScreen(number) {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen => {
+            screen.classList.remove("active");
+        });
+
+
+    const target =
+        document.getElementById(
+            "screen" + number
+        );
+
+
+    if (!target) return;
+
+
+    target.classList.add("active");
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+
+    if (number === 8) {
+
+        setTimeout(() => {
+
+            setupScratchCard();
+
+        }, 50);
+
+    }
+
+}
+
+
+/* =========================
+   LOADING SCREEN
+========================= */
+
+let progressValue = 0;
+
+const loadingText =
+    document.getElementById("loadingText");
+
+const progress =
+    document.getElementById("progress");
+
+
+const loadingSteps = [
+
+    "Initializing Birthday System...",
+
+    "Scanning brother database...",
+
+    "Loading classified memories...",
+
+    "Preparing birthday protocol...",
+
+    "System ready."
+
+];
+
+
+let loadingStep = 0;
+
+
+const loadingInterval =
+    setInterval(() => {
+
+        loadingStep++;
+
+        progressValue += 25;
+
+        if (progressValue > 100) {
+            progressValue = 100;
+        }
+
+        progress.style.width =
+            progressValue + "%";
+
+
+        loadingText.textContent =
+            loadingSteps[
+                Math.min(
+                    loadingStep,
+                    loadingSteps.length - 1
+                )
+            ];
+
+
+        if (progressValue >= 100) {
+
+            clearInterval(loadingInterval);
+
+        }
+
+    }, 800);
+
+
+/* =========================
+   START MISSION
+========================= */
+
+async function startMission() {
+
+    try {
+
+        await startMusic();
+
+    } catch (error) {
+
+        console.log(
+            "Music requires user interaction."
+        );
+
+    }
+
+
+    nextScreen(2);
+}
+
+
+/* =========================
+   NAME
+========================= */
+
+function saveName() {
+
+    const input =
+        document.getElementById(
+            "nameInput"
+        );
+
+
+    const name =
+        input.value.trim();
+
+
+    if (!name) {
+
+        alert(
+            "Please enter your brother's name!"
+        );
+
+        return;
+
+    }
+
+
+    brotherName = name;
+
+
+    document.getElementById(
+        "broNameDisplay"
+    );
+
+
+    document.getElementById(
+        "finalName"
+    ).textContent = brotherName;
+
+
+    nextScreen(4);
+
+}
+
+
+/* =========================
+   AGE
+========================= */
+
+function scanAge() {
+
+    const input =
+        document.getElementById(
+            "ageInput"
+        );
+
+
+    const age =
+        Number(input.value);
+
+
+    if (
+        !age ||
+        age < 1 ||
+        age > 120
+    ) {
+
+        alert(
+            "Please enter a valid age!"
+        );
+
+        return;
+
+    }
+
+
+    brotherAge = age;
+
+
+    document.getElementById(
+        "ageResult"
+    ).innerHTML = `
+
+        <p style="margin-top:20px">
+
+            🔍 Scanning...
+
+            <br><br>
+
+            Age ${age} detected successfully.
+
+        </p>
+
+        <button onclick="showProfile()">
+            VIEW PROFILE →
+        </button>
+
+    `;
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+function showProfile() {
+
+    document.getElementById(
+        "profileAge"
+    ).textContent =
+        brotherAge;
+
+
+    document.getElementById(
+        "profileLevel"
+    ).textContent =
+        "LVL " + brotherAge;
+
+
+    let message;
+
+
+    if (brotherAge < 18) {
+
+        message =
+            "Still loading adulthood... 😎";
+
+    } else if (brotherAge < 25) {
+
+        message =
+            "Young, chaotic and officially legendary. 🔥";
+
+    } else if (brotherAge < 40) {
+
+        message =
+            "Experienced enough to know better... but doesn't. 😂";
+
+    } else {
+
+        message =
+            "Elite brother status unlocked. 👑";
+
+    }
+
+
+    document.getElementById(
+        "ageMessage"
+    ).textContent =
+        message;
+
+
+    nextScreen(5);
+
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+function quizAnswer(answer) {
+
+    const result =
+        document.getElementById(
+            "quizResult"
+        );
+
+
+    if (answer === "correct") {
+
+        result.textContent =
+            "✅ CORRECT! Obviously. You know the legend.";
+
+        setTimeout(() => {
+
+            nextScreen(7);
+
+        }, 1800);
+
+    } else {
+
+        result.textContent =
+            "❌ WRONG! Seriously? Try again 😂";
+
+    }
+
+}
+
+
+/* =========================
+   SCRATCH CARD
+========================= */
+
+const scratchCanvas =
+    document.getElementById(
+        "scratchCanvas"
+    );
+
+const scratchWrapper =
+    document.querySelector(
+        ".scratch-wrapper"
+    );
+
+const scratchProgress =
+    document.getElementById(
+        "scratchProgress"
+    );
+
+const scratchPercent =
+    document.getElementById(
+        "scratchPercent"
+    );
+
+
+let scratchCtx = null;
+
+let isScratching = false;
+
+let scratchCompleted = false;
+
+let scratchInitialized = false;
+
+
+function setupScratchCard() {
+
+    if (
+        scratchInitialized ||
+        !scratchCanvas ||
+        !scratchWrapper
+    ) {
+        return;
+    }
+
+
+    const rect =
+        scratchWrapper.getBoundingClientRect();
+
+
+    if (
+        rect.width === 0 ||
+        rect.height === 0
+    ) {
+        return;
+    }
+
+
+    const dpr =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+
+    scratchCanvas.width =
+        rect.width * dpr;
+
+    scratchCanvas.height =
+        rect.height * dpr;
+
+
+    scratchCanvas.style.width =
+        rect.width + "px";
+
+    scratchCanvas.style.height =
+        rect.height + "px";
+
+
+    scratchCtx =
+        scratchCanvas.getContext(
+            "2d",
+            { willReadFrequently: true }
+        );
+
+
+    scratchCtx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+
+    const gradient =
+        scratchCtx.createLinearGradient(
+            0,
+            0,
+            rect.width,
+            rect.height
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "#8b8b8b"
+    );
+
+    gradient.addColorStop(
+        .5,
+        "#b5b5b5"
+    );
+
+    gradient.addColorStop(
+        1,
+        "#686868"
+    );
+
+
+    scratchCtx.fillStyle =
+        gradient;
+
+    scratchCtx.fillRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+    );
+
+
+    scratchCtx.fillStyle =
+        "rgba(255,255,255,.25)";
+
+    scratchCtx.font =
+        "bold 25px system-ui";
+
+    scratchCtx.textAlign =
+        "center";
+
+    scratchCtx.fillText(
+        "🎁 SCRATCH ME!",
+        rect.width / 2,
+        rect.height / 2
+    );
+
+
+    scratchCtx.font =
+        "14px system-ui";
+
+    scratchCtx.fillText(
+        "Reveal your surprise",
+        rect.width / 2,
+        rect.height / 2 + 30
+    );
+
+
+    scratchInitialized = true;
+
+}
+
+
+function getScratchPosition(event) {
+
+    const rect =
+        scratchCanvas.getBoundingClientRect();
+
+
+    return {
+
+        x:
+            event.clientX - rect.left,
+
+        y:
+            event.clientY - rect.top
+
+    };
+
+}
+
+
+function scratch(event) {
+
+    if (
+        !isScratching ||
+        scratchCompleted ||
+        !scratchCtx
+    ) {
+        return;
+    }
+
+
+    const position =
+        getScratchPosition(event);
+
+
+    scratchCtx.globalCompositeOperation =
+        "destination-out";
+
+
+    scratchCtx.beginPath();
+
+    scratchCtx.arc(
+        position.x,
+        position.y,
+        25,
+        0,
+        Math.PI * 2
+    );
+
+    scratchCtx.fill();
+
+
+    if (
+        Math.random() < .08
+    ) {
+        checkScratchPercentage();
+    }
+
+}
+
+
+scratchCanvas.addEventListener(
+    "pointerdown",
+    event => {
+
+        isScratching = true;
+
+        scratchCanvas.setPointerCapture(
+            event.pointerId
+        );
+
+        scratch(event);
+
+    }
+);
+
+
+scratchCanvas.addEventListener(
+    "pointermove",
+    scratch
+);
+
+
+scratchCanvas.addEventListener(
+    "pointerup",
+    event => {
+
+        isScratching = false;
+
+        checkScratchPercentage();
+
+        try {
+
+            scratchCanvas.releasePointerCapture(
+                event.pointerId
+            );
+
+        } catch (e) {}
+
+    }
+);
+
+
+scratchCanvas.addEventListener(
+    "pointercancel",
+    () => {
+
+        isScratching = false;
+
+    }
+);
+
+
+function checkScratchPercentage() {
+
+    if (
+        !scratchCtx ||
+        scratchCompleted
+    ) {
+        return;
+    }
+
+
+    const width =
+        scratchCanvas.width;
+
+    const height =
+        scratchCanvas.height;
+
+
+    const imageData =
+        scratchCtx.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+    const data =
+        imageData.data;
+
+
+    let transparent = 0;
+
+    let total = 0;
+
+
+    for (
+        let i = 3;
+        i < data.length;
+        i += 64
+    ) {
+
+        total++;
+
+        if (data[i] < 50) {
+
+            transparent++;
+
+        }
+
+    }
+
+
+    const percent =
+        Math.round(
+            (transparent / total) * 100
+        );
+
+
+    scratchProgress.style.width =
+        Math.min(percent, 100) + "%";
+
+
+    scratchPercent.textContent =
+        percent + "% scratched";
+
+
+    if (percent >= 55) {
+
+        revealScratchCard();
+
+    }
+
+}
+
+
+function revealScratchCard() {
+
+    if (scratchCompleted) {
+        return;
+    }
+
+
+    scratchCompleted = true;
+
+
+    scratchProgress.style.width =
+        "100%";
+
+
+    scratchPercent.textContent =
+        "100% scratched 🎉";
+
+
+    scratchCanvas.style.opacity =
+        "0";
+
+
+    setTimeout(() => {
+
+        scratchCanvas.style.display =
+            "none";
+
+    }, 700);
+
+
+    celebrate();
+
+}
+
+
+/* =========================
+   MEMORY VAULT
+========================= */
+
+const memories = [
+
+    {
+        image: "image/brother1.jpeg",
+
+        title: "😂 The Legend",
+
+        caption:
+            "Ye banda legend hai. Ye vo pal hai jo officially family ki yaadon me record ho gya."
+    },
+
+    {
+        image: "image/brother2.jpeg",
+
+        title: "😎 Always Cool",
+
+        caption:
+            "Kch log photos ke liye normally pose dete hai, lekin tm aise pose dete ho jaise tm he main character ho. "
+    },
+
+    {
+        image: "image/brother3.jpeg",
+
+        title: "🤣 Certified Trouble",
+
+        caption:
+            "Yah proof hai ki tm kabhi bhi 100% seedhe nhi rahe, har samay mazaak."
+    },
+
+    {
+        image: "image/brother4.jpeg",
+
+        title: "❤️ Good Times",
+
+        caption:
+            "Ye hamesha yaad rakhne layak yaad hai."
+    },
+
+    {
+        image: "image/brother5.jpeg",
+
+        title: "🔥 Main Character",
+
+        caption:
+            "Ek aur legendary moment memory me add ho gya."
+    },
+
+    {
+        image: "image/brother6.jpeg",
+
+        title: "👑 The usual suspects",
+
+        caption:
+            "Sab ki alag personality lekin mati ka level ekdam same hai."
+    },
+    {
+        image: "image/brother8.jpeg",
+
+        title: "👑 Birthday King",
+
+        caption:
+            "And finally... the birthday legend himself.(Aur aakhir me... Birthday ka asli legend khud.)"
+    }
+
+];
+
+
+let currentMemory = 0;
+
+let unlockedMemories =
+    new Set([0]);
+
+
+const memoryImage =
+    document.getElementById(
+        "memoryImage"
+    );
+
+const memoryTitle =
+    document.getElementById(
+        "memoryTitle"
+    );
+
+const memoryCaption =
+    document.getElementById(
+        "memoryCaption"
+    );
+
+const memoryCounter =
+    document.getElementById(
+        "memoryCounter"
+    );
+
+const memoryPercent =
+    document.getElementById(
+        "memoryPercent"
+    );
+
+const memoryProgressFill =
+    document.getElementById(
+        "memoryProgressFill"
+    );
+
+const unlockStatus =
+    document.getElementById(
+        "unlockStatus"
+    );
+
+const photoNumber =
+    document.getElementById(
+        "photoNumber"
+    );
+
+const photoFrame =
+    document.querySelector(
+        ".photo-frame"
+    );
+
+const finalMemoryUnlock =
+    document.getElementById(
+        "finalMemoryUnlock"
+    );
+
+const memoryDots =
+    document.querySelectorAll(
+        ".memory-dot"
+    );
+
+
+function updateMemoryScreen(index) {
+
+    const memory =
+        memories[index];
+
+
+    photoFrame.classList.add(
+        "changing"
+    );
+
+
+    setTimeout(() => {
+
+        memoryImage.src =
+            memory.image;
+
+        memoryImage.alt =
+            memory.title;
+
+
+        memoryTitle.textContent =
+            memory.title;
+
+
+        memoryCaption.textContent =
+            memory.caption;
+
+
+        photoNumber.textContent =
+            "#" +
+            String(index + 1)
+                .padStart(2, "0");
+
+
+        memoryCounter.textContent =
+            `MEMORY ${index + 1} / ${memories.length}`;
+
+
+        unlockedMemories.add(index);
+
+
+        const unlockedCount =
+            unlockedMemories.size;
+
+
+        const percent =
+            Math.round(
+                (unlockedCount /
+                    memories.length) *
+                100
+            );
+
+
+        memoryPercent.textContent =
+            percent + "%";
+
+
+        memoryProgressFill.style.width =
+            percent + "%";
+
+
+        unlockStatus.textContent =
+            `🔓 ${unlockedCount} ${
+                unlockedCount === 1
+                    ? "MEMORY"
+                    : "MEMORIES"
+            } UNLOCKED`;
+
+
+        memoryDots.forEach(
+            (dot, i) => {
+
+                dot.classList.toggle(
+                    "active",
+                    i === index
+                );
+
+            }
+        );
+
+
+        photoFrame.classList.remove(
+            "changing"
+        );
+
+
+        if (
+            unlockedCount ===
+            memories.length
+        ) {
+
+            unlockAllMemories();
+
+        }
+
+    }, 250);
+
+}
+
+
+function nextMemory() {
+
+    currentMemory++;
+
+
+    if (
+        currentMemory >=
+        memories.length
+    ) {
+
+        currentMemory = 0;
+
+    }
+
+
+    updateMemoryScreen(
+        currentMemory
+    );
+
+}
+
+
+function previousMemory() {
+
+    currentMemory--;
+
+
+    if (currentMemory < 0) {
+
+        currentMemory =
+            memories.length - 1;
+
+    }
+
+
+    updateMemoryScreen(
+        currentMemory
+    );
+
+}
+
+
+function goToMemory(index) {
+
+    if (
+        index < 0 ||
+        index >= memories.length
+    ) {
+        return;
+    }
+
+
+    currentMemory =
+        index;
+
+
+    updateMemoryScreen(
+        currentMemory
+    );
+
+}
+
+
+function unlockAllMemories() {
+
+    finalMemoryUnlock.classList.add(
+        "show"
+    );
+
+
+    unlockStatus.textContent =
+        "🔓 ALL 6 MEMORIES UNLOCKED";
+
+
+    memoryProgressFill.style.width =
+        "100%";
+
+
+    memoryPercent.textContent =
+        "100%";
+
+
+    celebrate();
+
+}
+
+
+/* =========================
+   KEYBOARD NAVIGATION
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        const screen9 =
+            document.getElementById(
+                "screen9"
+            );
+
+
+        if (
+            !screen9.classList.contains(
+                "active"
+            )
+        ) {
+            return;
+        }
+
+
+        if (
+            event.key ===
+            "ArrowRight"
+        ) {
+
+            nextMemory();
+
+        }
+
+
+        if (
+            event.key ===
+            "ArrowLeft"
+        ) {
+
+            previousMemory();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   TOUCH SWIPE
+========================= */
+
+let touchStartX = 0;
+
+let touchEndX = 0;
+
+
+photoFrame.addEventListener(
+    "touchstart",
+    function(event) {
+
+        touchStartX =
+            event.changedTouches[0]
+                .screenX;
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+photoFrame.addEventListener(
+    "touchend",
+    function(event) {
+
+        touchEndX =
+            event.changedTouches[0]
+                .screenX;
+
+
+        handleMemorySwipe();
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+function handleMemorySwipe() {
+
+    const difference =
+        touchEndX -
+        touchStartX;
+
+
+    if (
+        Math.abs(difference) < 50
+    ) {
+        return;
+    }
+
+
+    if (difference < 0) {
+
+        nextMemory();
+
+    } else {
+
+        previousMemory();
+
+    }
+
+}
+
+
+/* =========================
+   CONFETTI
+========================= */
+
+function celebrate() {
+
+    const emojis = [
+
+        "🎉",
+        "🎊",
+        "✨",
+        "🎂",
+        "❤️",
+        "⭐",
+        "🥳"
+
+    ];
+
+
+    for (
+        let i = 0;
+        i < 80;
+        i++
+    ) {
+
+        const piece =
+            document.createElement(
+                "div"
+            );
+
+
+        piece.className =
+            "confetti";
+
+
+        piece.textContent =
+            emojis[
+                Math.floor(
+                    Math.random() *
+                    emojis.length
+                )
+            ];
+
+
+        piece.style.left =
+            Math.random() * 100 + "vw";
+
+
+        piece.style.fontSize =
+            (12 + Math.random() * 22)
+            + "px";
+
+
+        piece.style.animationDuration =
+            (2 + Math.random() * 4)
+            + "s";
+
+
+        piece.style.animationDelay =
+            Math.random() * .8 + "s";
+
+
+        document.body.appendChild(
+            piece
+        );
+
+
+        setTimeout(() => {
+
+            piece.remove();
+
+        }, 5500);
+
+    }
+
+}
+
+
+/* =========================
+   GENERATED MUSIC
+========================= */
+
+let audioContext = null;
+
+let masterGain = null;
+
+let musicPlaying = false;
+
+let musicMuted = false;
+
+let musicTimer = null;
+
+let noteIndex = 0;
+
+
+const melody = [
+
+    523.25,
+    523.25,
+    587.33,
+    659.25,
+
+    659.25,
+    587.33,
+    523.25,
+    392.00,
+
+    440.00,
+    440.00,
+    523.25,
+    587.33,
+
+    659.25,
+    587.33,
+    523.25,
+    392.00
+
+];
+
+
+function setupAudio() {
+
+    if (audioContext) {
+        return;
+    }
+
+
+    const AudioCtx =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+
+    if (!AudioCtx) {
+        return;
+    }
+
+
+    audioContext =
+        new AudioCtx();
+
+
+    masterGain =
+        audioContext.createGain();
+
+
+    masterGain.gain.value =
+        musicMuted
+            ? 0
+            : 0.08;
+
+
+    masterGain.connect(
+        audioContext.destination
+    );
+
+}
+
+
+function playNote(frequency) {
+
+    if (
+        !audioContext ||
+        !masterGain
+    ) {
+        return;
+    }
+
+
+    const oscillator =
+        audioContext.createOscillator();
+
+
+    const gain =
+        audioContext.createGain();
+
+
+    oscillator.type =
+        "sine";
+
+
+    oscillator.frequency.value =
+        frequency;
+
+
+    const now =
+        audioContext.currentTime;
+
+
+    gain.gain.setValueAtTime(
+        0,
+        now
+    );
+
+
+    gain.gain.linearRampToValueAtTime(
+        0.8,
+        now + 0.03
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        now + 0.45
+    );
+
+
+    oscillator.connect(gain);
+
+    gain.connect(masterGain);
+
+
+    oscillator.start(now);
+
+    oscillator.stop(
+        now + 0.5
+    );
+
+}
+
+
+function startMusic() {
+
+    setupAudio();
+
+
+    if (!audioContext) {
+        return Promise.resolve();
+    }
+
+
+    if (
+        audioContext.state ===
+        "suspended"
+    ) {
+
+        return audioContext
+            .resume()
+            .then(() => {
+
+                beginMusic();
+
+            });
+
+    }
+
+
+    beginMusic();
+
+    return Promise.resolve();
+
+}
+
+
+function beginMusic() {
+
+    if (musicPlaying) {
+        return;
+    }
+
+
+    musicPlaying = true;
+
+
+    document.getElementById(
+        "musicPlayPause"
+    ).textContent =
+        "⏸️ Pause";
+
+
+    playNextNote();
+
+}
+
+
+function playNextNote() {
+
+    if (!musicPlaying) {
+        return;
+    }
+
+
+    playNote(
+        melody[noteIndex]
+    );
+
+
+    noteIndex =
+        (noteIndex + 1) %
+        melody.length;
+
+
+    musicTimer =
+        setTimeout(
+            playNextNote,
+            520
+        );
+
+}
+
+
+function pauseMusic() {
+
+    musicPlaying = false;
+
+
+    clearTimeout(
+        musicTimer
+    );
+
+
+    musicTimer = null;
+
+
+    document.getElementById(
+        "musicPlayPause"
+    ).textContent =
+        "▶️ Play";
+
+}
+
+
+function toggleMute() {
+
+    setupAudio();
+
+
+    musicMuted =
+        !musicMuted;
+
+
+    if (masterGain) {
+
+        masterGain.gain.value =
+            musicMuted
+                ? 0
+                : 0.08;
+
+    }
+
+
+    document.getElementById(
+        "musicToggle"
+    ).textContent =
+        musicMuted
+            ? "🔇 Music Off"
+            : "🔊 Music On";
+
+
+    if (
+        !musicMuted &&
+        !musicPlaying
+    ) {
+
+        startMusic();
+
+    }
+
+}
+
+
+document.getElementById(
+    "musicPlayPause"
+).addEventListener(
+    "click",
+    () => {
+
+        if (musicPlaying) {
+
+            pauseMusic();
+
+        } else {
+
+            startMusic();
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "musicToggle"
+).addEventListener(
+    "click",
+    toggleMute
+);
+
+
+/* =========================
+   AUTOPLAY ATTEMPT
+========================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        startMusic()
+            .catch(() => {
+
+                console.log(
+                    "Browser blocked autoplay. Music will start when START MISSION is clicked."
+                );
+
+            });
+
+    }
+);
+
+
+/* =========================
+   RESIZE
+========================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        const screen8 =
+            document.getElementById(
+                "screen8"
+            );
+
+
+        if (
+            screen8 &&
+            screen8.classList.contains(
+                "active"
+            ) &&
+            !scratchInitialized
+        ) {
+
+            setupScratchCard();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
